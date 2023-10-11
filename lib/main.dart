@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 void main() {
   runApp(const MainApp());

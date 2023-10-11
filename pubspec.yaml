@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  wechat_assets_picker:
+  photo_manager:
   path_provider:
   external_path:
   collection:
