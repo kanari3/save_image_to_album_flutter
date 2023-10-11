@@ -14,6 +14,7 @@ void main() {
   runApp(const MainApp());
 }
 
+// Photo URL
 String photoUrl = 'https://www.gstatic.com/webp/gallery/1.jpg';
 // Your album name
 const albumName = 'my album';
@@ -98,12 +99,12 @@ class MainApp extends StatelessWidget {
       // iOS needs tagging to image.
       if (Platform.isIOS) {
         final paths = await PhotoManager.getAssetPathList();
-        var anotherPathEntity = paths.firstWhereOrNull((e) => e.name == albumName);
+        var assetPathEntity = paths.firstWhereOrNull((e) => e.name == albumName);
         // If album does not exist, you also need to use the createAlbum method before copying.
-        anotherPathEntity ??= await PhotoManager.editor.darwin.createAlbum(albumName);
+        assetPathEntity ??= await PhotoManager.editor.darwin.createAlbum(albumName);
         await PhotoManager.editor.copyAssetToPath(
           asset: assetEntity!,
-          pathEntity: anotherPathEntity!,
+          pathEntity: assetPathEntity!,
         );
       }
       Fluttertoast.showToast(msg: 'Success! saved image as $fileName');
