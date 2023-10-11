@@ -1,5 +1,5 @@
 name: save_image_to_album
-description: A new Flutter project.
+description: Sample App for Save image to Album.
 publish_to: 'none'
 version: 0.1.0
 
@@ -9,6 +9,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  wechat_assets_picker:
+  path_provider:
+  external_path:
+  collection:
+  http:
+  intl:
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:
