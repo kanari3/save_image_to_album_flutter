@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -61,28 +63,25 @@ class MainApp extends StatelessWidget {
   Future<void> saveImage() async {
     try {
       final response = await http.get(Uri.parse(photoUrl));
-      Directory? dir;
+      final tempDir = await getTemporaryDirectory();
 
-      // get save directly
+      // create save directly
       if (Platform.isAndroid) {
         final picturesPath = await ExternalPath.getExternalStoragePublicDirectory(
           ExternalPath.DIRECTORY_PICTURES,
         );
         final albumPath = '$picturesPath/$albumName';
         // If directly does not exist, create directly before writing.
-        dir = await Directory(albumPath).create(recursive: true);
-      }
-      if (Platform.isIOS) {
-        dir = await getTemporaryDirectory();
+        await Directory(albumPath).create(recursive: true);
       }
 
       final now = DateTime.now();
       DateFormat outputFormat = DateFormat('yyyy-MM-dd_HH-mm_ssS');
       final fileName = '${outputFormat.format(now)}.jpg';
+      print('file name: $fileName');
 
-      final path = '${dir?.path}/$fileName';
-      final file = File(path)..writeAsBytesSync(response.bodyBytes);
-
+      final file = File('${tempDir.path}/$fileName')..writeAsBytesSync(response.bodyBytes);
+      print('temp file path: ${file.path}');
       final permissionState = await PhotoManager.requestPermissionExtend();
       if (!permissionState.isAuth) {
         Fluttertoast.showToast(msg: 'Please allow access and try again.');
@@ -93,8 +92,9 @@ class MainApp extends StatelessWidget {
       final assetEntity = await PhotoManager.editor.saveImageWithPath(
         file.path,
         title: fileName,
-        relativePath: albumName,
+        relativePath: Platform.isAndroid ? 'Pictures/$albumName' : albumName,
       );
+      print('assetEntity: $assetEntity');
 
       // iOS needs tagging to image.
       if (Platform.isIOS) {
@@ -108,7 +108,13 @@ class MainApp extends StatelessWidget {
         );
       }
       Fluttertoast.showToast(msg: 'Success! saved image as $fileName');
+
+      // clear cache
+      file.deleteSync(recursive: true);
+      print('completed!');
+
     } catch (e) {
+      print(e);
       Fluttertoast.showToast(msg: 'error: $e');
     }
   }
