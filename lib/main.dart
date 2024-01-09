@@ -65,13 +65,13 @@ class MainApp extends StatelessWidget {
       final response = await http.get(Uri.parse(photoUrl));
       final tempDir = await getTemporaryDirectory();
 
-      // create save directly
+      // create save directory
       if (Platform.isAndroid) {
         final picturesPath = await ExternalPath.getExternalStoragePublicDirectory(
           ExternalPath.DIRECTORY_PICTURES,
         );
         final albumPath = '$picturesPath/$albumName';
-        // If directly does not exist, create directly before writing.
+        // If directory does not exist, create directory before writing.
         await Directory(albumPath).create(recursive: true);
       }
 
