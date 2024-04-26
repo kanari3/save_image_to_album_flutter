@@ -83,7 +83,7 @@ class MainApp extends StatelessWidget {
       final file = File('${tempDir.path}/$fileName')..writeAsBytesSync(response.bodyBytes);
       print('temp file path: ${file.path}');
       final permissionState = await PhotoManager.requestPermissionExtend();
-      if (!permissionState.isAuth) {
+      if (!permissionState.hasAccess) {
         Fluttertoast.showToast(msg: 'Please allow access and try again.');
         return;
       }
